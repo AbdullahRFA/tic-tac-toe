@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="cyber">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Tic-Tac-Toe | Ultimate Edition</title>
+  <link rel="stylesheet" href="style.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;700;800&display=swap" rel="stylesheet">
+</head>
+<body>
+  <div class="background-decor">
+    <div class="blob blob-1"></div>
+    <div class="blob blob-2"></div>
+  </div>
+
+  <main class="game-container">
+    <!-- Header -->
+    <header class="header">
+      <h1 class="game-title">TIC <span>TAC</span> TOE</h1>
+      <div class="header-controls">
+        <button id="themeToggleBtn" class="icon-btn" title="Change Theme" aria-label="Change Theme">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <circle cx="12" cy="12" r="5"></circle>
+            <path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"></path>
+          </svg>
+        </button>
+        <button id="soundToggleBtn" class="icon-btn" title="Toggle Sound" aria-label="Toggle Sound">
+          <svg class="sound-on-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon>
+            <path d="M15.54 8.46a5 5 0 0 1 0 7.07"></path>
+            <path d="M19.07 4.93a10 10 0 0 1 0 14.14"></path>
+          </svg>
+          <svg class="sound-off-icon hidden" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon>
+            <line x1="23" y1="9" x2="17" y2="15"></line>
+            <line x1="17" y1="9" x2="23" y2="15"></line>
+          </svg>
+        </button>
+      </div>
+    </header>
+
+    <!-- Controls Row: Game Mode & Symbol Style -->
+    <section class="controls-panel">
+      <div class="control-group">
+        <label for="gameMode">Mode</label>
+        <select id="gameMode" class="custom-select">
+          <option value="pvp">👥 2 Players (Local)</option>
+          <option value="ai-unbeatable" selected>🤖 vs AI (Unbeatable)</option>
+          <option value="ai-medium">🤖 vs AI (Medium)</option>
+          <option value="ai-easy">🤖 vs AI (Easy)</option>
+        </select>
+      </div>
+      <div class="control-group">
+        <label for="symbolSet">Symbols</label>
+        <select id="symbolSet" class="custom-select">
+          <option value="classic" selected>✕ / ◯ Classic</option>
+          <option value="elements">⚡ / 🔥 Elemental</option>
+          <option value="animals">🐱 / 🐶 Pets</option>
+          <option value="royal">👑 / 💎 Royal</option>
+        </select>
+      </div>
+    </section>
+
+    <!-- Score Board -->
+    <section class="scoreboard" aria-label="Scoreboard">
+      <div class="score-card player-x" id="scoreCardX">
+        <div class="player-tag">
+          <span class="symbol-icon" id="tagSymbolX">✕</span>
+          <span class="player-name" id="namePlayerX">PLAYER X</span>
+        </div>
+        <div class="score-value" id="scoreX">0</div>
+        <div class="win-rate" id="winRateX">0% Win</div>
+      </div>
+
+      <div class="score-card score-ties" id="scoreCardTies">
+        <div class="player-tag">
+          <span class="symbol-icon">🤝</span>
+          <span class="player-name">TIES</span>
+        </div>
+        <div class="score-value" id="scoreTies">0</div>
+        <div class="win-rate" id="totalMatches">0 Matches</div>
+      </div>
+
+      <div class="score-card player-o" id="scoreCardO">
+        <div class="player-tag">
+          <span class="symbol-icon" id="tagSymbolO">◯</span>
+          <span class="player-name" id="namePlayerO">AI (O)</span>
+        </div>
+        <div class="score-value" id="scoreO">0</div>
+        <div class="win-rate" id="winRateO">0% Win</div>
+      </div>
+    </section>
+
+    <!-- Turn Indicator Banner -->
+    <div class="status-banner" id="statusBanner">
+      <span class="turn-dot"></span>
+      <span class="status-text" id="statusText">Player X's Turn</span>
+    </div>
+
+    <!-- The 3x3 Game Board -->
+    <div class="board-wrapper">
+      <div class="game-board" id="board" role="grid" aria-label="Tic Tac Toe Board">
+        <button class="cell" data-index="0" role="gridcell" aria-label="Cell 1"></button>
+        <button class="cell" data-index="1" role="gridcell" aria-label="Cell 2"></button>
+        <button class="cell" data-index="2" role="gridcell" aria-label="Cell 3"></button>
+        <button class="cell" data-index="3" role="gridcell" aria-label="Cell 4"></button>
+        <button class="cell" data-index="4" role="gridcell" aria-label="Cell 5"></button>
+        <button class="cell" data-index="5" role="gridcell" aria-label="Cell 6"></button>
+        <button class="cell" data-index="6" role="gridcell" aria-label="Cell 7"></button>
+        <button class="cell" data-index="7" role="gridcell" aria-label="Cell 8"></button>
+        <button class="cell" data-index="8" role="gridcell" aria-label="Cell 9"></button>
+        
+        <!-- SVG Strike Line for Winning 3-in-a-row -->
+        <svg class="strike-line-svg" id="strikeLineSvg">
+          <line id="strikeLine" x1="0" y1="0" x2="0" y2="0" />
+        </svg>
+      </div>
+
+      <!-- Confetti Canvas for Victory Celebrations -->
+      <canvas id="confettiCanvas" class="confetti-canvas"></canvas>
+    </div>
+
+    <!-- Quick Assist Toolbar: Hint & Undo -->
+    <div class="assist-toolbar">
+      <button id="hintBtn" class="btn btn-assist" title="Show optimal move">
+        <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M9 18h6M10 22h4M12 2a7 7 0 0 0-7 7c0 2.5 1.5 4.5 3 6h8c1.5-1.5 3-3.5 3-6a7 7 0 0 0-7-7z"></path>
+        </svg>
+        Hint
+      </button>
+      <button id="undoBtn" class="btn btn-assist" title="Undo last move" disabled>
+        <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M3 7v6h6"></path>
+          <path d="M21 17a9 9 0 0 0-9-9 9 9 0 0 0-6 2.3L3 13"></path>
+        </svg>
+        Undo
+      </button>
+    </div>
+
+    <!-- Action Buttons -->
+    <footer class="action-footer">
+      <button id="restartBtn" class="btn btn-primary">
+        <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.2">
+          <path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"></path>
+          <path d="M3 3v5h5"></path>
+        </svg>
+        New Round
+      </button>
+      <button id="resetScoreBtn" class="btn btn-secondary">Reset Scores</button>
+    </footer>
+  </main>
+
+  <script src="script.js"></script>
+</body>
+</html>
